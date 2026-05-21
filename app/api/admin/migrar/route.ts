@@ -65,7 +65,8 @@ async function uploadArquivo(
   const mimeOrig  = getMimeType(filename)
   const nomeDrive = convertToGDoc ? filename.replace(/\.(docx|doc)$/i, '') : filename
 
-  await drive.files.create({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (drive.files.create as any)({
     requestBody: {
       name:     nomeDrive,
       parents:  [parentId],
@@ -77,7 +78,7 @@ async function uploadArquivo(
     },
     fields: 'id',
     ...DRIVE_FLAGS,
-  } as Parameters<typeof drive.files.create>[0])
+  })
 }
 
 async function encontrarPastaExistente(
@@ -108,6 +109,13 @@ export async function POST() {
   const session = await getServerSession(authOptions)
   if (!session?.accessToken) {
     return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+  }
+
+  if (!fs.existsSync(BACK_DIR)) {
+    return NextResponse.json(
+      { error: 'Pasta back/ não encontrada. Este endpoint só funciona localmente.' },
+      { status: 400 },
+    )
   }
 
   const drive = getDrive(session.accessToken)
