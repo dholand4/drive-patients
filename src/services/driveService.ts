@@ -196,6 +196,17 @@ export const driveService = {
   },
 
   /**
+   * Encontra ou cria o doc do ano corrente na pasta Prontuário do paciente.
+   * Retorna o docId pronto para navegação direta.
+   */
+  async obterDocAnoAtual(folderId: string, accessToken: string): Promise<string> {
+    const prontuarioPastaId = await encontrarPastaProntuario(folderId, accessToken)
+    if (!prontuarioPastaId) throw new Error('Pasta Prontuário não encontrada.')
+    const doc = await encontrarOuCriarDocAno(prontuarioPastaId, accessToken)
+    return doc.id
+  },
+
+  /**
    * Lista os docs de ano disponíveis na pasta Prontuário do paciente.
    * Retorna array vazio se não houver estrutura nova.
    */

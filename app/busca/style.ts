@@ -156,3 +156,106 @@ export const ModalConfirmBtn = styled(BaseBtn)`
     background: ${({ theme }) => theme.colors.primaryDark};
   }
 `
+
+// ── Modal de Acesso Rápido ───────────────────────────────────────────────────
+
+export const QuickModalBox = styled.div`
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.borderRadius.lg}px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 80vh;
+`
+
+export const QuickModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.md}px ${({ theme }) => theme.spacing.lg}px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`
+
+export const QuickModalTitle = styled.h2`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.sizes.lg};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin: 0;
+`
+
+export const QuickModalClose = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm}px;
+  &:hover { background: ${({ theme }) => theme.colors.background}; }
+`
+
+export const QuickSearchWrapper = styled.div`
+  padding: ${({ theme }) => theme.spacing.md}px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`
+
+export const QuickList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1;
+`
+
+export const QuickItem = styled.li<{ $loading?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.md}px ${({ theme }) => theme.spacing.lg}px;
+  cursor: ${({ $loading }) => ($loading ? 'wait' : 'pointer')};
+  transition: background-color 0.12s;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: ${({ theme }) => theme.colors.background}; }
+`
+
+export const QuickItemNome = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.sizes.md};
+  color: ${({ theme }) => theme.colors.textPrimary};
+`
+
+export const QuickItemSub = styled.span`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.sizes.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
+`
+
+export const QuickEmpty = styled.p`
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.sizes.md};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-align: center;
+  padding: ${({ theme }) => theme.spacing.xl}px;
+  margin: 0;
+`
+
+export const NewPatientLink = styled.button`
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing.md}px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-size: ${({ theme }) => theme.typography.sizes.sm};
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  &:hover { background: ${({ theme }) => theme.colors.primaryLight}; }
+`

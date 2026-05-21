@@ -7,6 +7,13 @@ export const prontuarioService = {
     return res.json() as Promise<IPaciente[]>
   },
 
+  async obterDocAnoAtual(id: string): Promise<string> {
+    const res = await fetch(`/api/prontuario/${id}/ano-atual`)
+    if (!res.ok) throw new Error('Erro ao obter doc do ano atual')
+    const data = (await res.json()) as { docId: string }
+    return data.docId
+  },
+
   async listarAnos(id: string): Promise<IDocAno[]> {
     const res = await fetch(`/api/prontuario/${id}/anos`)
     if (!res.ok) throw new Error('Erro ao listar anos')
