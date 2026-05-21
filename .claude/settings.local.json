@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rn \"new Date\\\\|Date\\\\\\\\.now\" --include=\"*.ts\" --include=\"*.tsx\" src/ app/)",
+      "Bash(npm run *)"
+    ]
+  }
+}
