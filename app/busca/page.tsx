@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { SearchInputGlobal } from '@/components/searchInputGlobal'
 import { PatientCardGlobal } from '@/components/patientCardGlobal'
@@ -25,7 +25,7 @@ import {
   ModalConfirmBtn,
 } from './style'
 
-export default function BuscaPage() {
+function BuscaContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
@@ -116,5 +116,13 @@ export default function BuscaPage() {
         </ModalOverlay>
       )}
     </PageWrapper>
+  )
+}
+
+export default function BuscaPage() {
+  return (
+    <Suspense>
+      <BuscaContent />
+    </Suspense>
   )
 }
