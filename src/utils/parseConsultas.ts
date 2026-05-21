@@ -27,7 +27,7 @@ export function parseConsultas(texto: string): IConsulta[] {
       const trimmed = linha.trimEnd()
       if (!atual.descricao && !trimmed) continue   // pula linhas vazias antes do texto
       atual = {
-        ...atual,
+        data: atual.data,
         descricao: atual.descricao
           ? `${atual.descricao}\n${trimmed}`
           : trimmed,
