@@ -26,6 +26,8 @@ async function refreshAccessToken(refreshToken: string) {
   }
 }
 
+const isProd = process.env.NEXTAUTH_URL?.startsWith('https')
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -85,7 +87,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax' as const,
         path: '/',
-        secure: false,
+        secure: isProd,
       },
     },
     pkceCodeVerifier: {
@@ -94,7 +96,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax' as const,
         path: '/',
-        secure: false,
+        secure: isProd,
       },
     },
     sessionToken: {
@@ -103,7 +105,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax' as const,
         path: '/',
-        secure: false,
+        secure: isProd,
       },
     },
     callbackUrl: {
@@ -112,7 +114,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax' as const,
         path: '/',
-        secure: false,
+        secure: isProd,
       },
     },
     csrfToken: {
@@ -121,7 +123,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax' as const,
         path: '/',
-        secure: false,
+        secure: isProd,
       },
     },
   },
