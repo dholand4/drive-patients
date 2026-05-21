@@ -121,7 +121,7 @@ function BuscaContent() {
 
 export default function BuscaPage() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <BuscaContent />
     </Suspense>
   )
