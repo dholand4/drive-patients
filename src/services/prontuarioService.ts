@@ -30,6 +30,24 @@ export const prontuarioService = {
     return res.json() as Promise<IProntuario>
   },
 
+  async editarConsulta(pacienteId: string, docId: string, consulta: IConsulta, novaDescricao: string): Promise<void> {
+    const res = await fetch(`/api/prontuario/${pacienteId}/${docId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ consulta, novaDescricao }),
+    })
+    if (!res.ok) throw new Error('Erro ao editar consulta')
+  },
+
+  async apagarConsulta(pacienteId: string, docId: string, consulta: IConsulta): Promise<void> {
+    const res = await fetch(`/api/prontuario/${pacienteId}/${docId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ consulta }),
+    })
+    if (!res.ok) throw new Error('Erro ao apagar consulta')
+  },
+
   async salvarConsulta(id: string, consulta: IConsulta): Promise<void> {
     const res = await fetch(`/api/prontuario/${id}`, {
       method: 'PUT',

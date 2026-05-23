@@ -304,6 +304,77 @@ export const driveService = {
   },
 
   /**
+   * Reescreve o conteúdo de um doc com a lista de consultas modificada.
+   * Apaga tudo e insere o novo texto a partir do índice 1.
+   */
+  async reescreverDoc(docId: string, consultas: { data: string; descricao: string }[], accessToken: string): Promise<void> {
+    const docs = getDocs(accessToken)
+    const docData = await docs.documents.get({ documentId: docId })
+    const content = docData.data.body?.content ?? []
+    const lastElement = content[content.length - 1]
+    const endIndex = (lastElement?.endIndex ?? 1) - 1
+
+    const novoTexto = consultas
+      .slice()
+      .reverse()
+      .map((c) => `${c.data}\n${c.descricao}`)
+      .join('\n\n')
+
+    const requests: object[] = []
+
+    if (endIndex > 1) {
+      requests.push({ deleteContentRange: { range: { startIndex: 1, endIndex: endIndex } } })
+    }
+
+    if (novoTexto) {
+      requests.push({ insertText: { location: { index: 1 }, text: novoTexto } })
+    }
+
+    if (requests.length > 0) {
+      await docs.documents.batchUpdate({ documentId: docId, requestBody: { requests } })
+    }
+  },
+
+  /**
+   * Edita a descrição de uma consulta específica no doc.
+   */
+  async editarConsulta(
+    docId: string,
+    consultaOriginal: { data: string; descricao: string },
+    novaDescricao: string,
+    accessToken: string,
+  ): Promise<void> {
+    const texto = await exportarGoogleDoc(docId, accessToken)
+    const { parseConsultas } = await import('@/utils/parseConsultas')
+    const consultas = parseConsultas(texto).slice().reverse() // ordem cronológica
+    const idx = consultas.findIndex(
+      (c) => c.data === consultaOriginal.data && c.descricao === consultaOriginal.descricao
+    )
+    if (idx === -1) throw new Error('Consulta não encontrada no documento.')
+    consultas[idx] = { ...consultas[idx], descricao: novaDescricao }
+    await driveService.reescreverDoc(docId, consultas, accessToken)
+  },
+
+  /**
+   * Apaga uma consulta específica do doc.
+   */
+  async apagarConsulta(
+    docId: string,
+    consulta: { data: string; descricao: string },
+    accessToken: string,
+  ): Promise<void> {
+    const texto = await exportarGoogleDoc(docId, accessToken)
+    const { parseConsultas } = await import('@/utils/parseConsultas')
+    const consultas = parseConsultas(texto).slice().reverse()
+    const idx = consultas.findIndex(
+      (c) => c.data === consulta.data && c.descricao === consulta.descricao
+    )
+    if (idx === -1) throw new Error('Consulta não encontrada no documento.')
+    consultas.splice(idx, 1)
+    await driveService.reescreverDoc(docId, consultas, accessToken)
+  },
+
+  /**
    * Cria pasta do paciente com estrutura nova:
    *   📁 Nome → 📁 Prontuário → 📄 [ano atual]
    *             📁 Outro

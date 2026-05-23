@@ -24,7 +24,7 @@ interface IDocPageProps {
 
 export default function ProntuarioDocPage({ params }: IDocPageProps) {
   const router = useRouter()
-  const { prontuario, loading, saving, error, saveError, salvarConsulta } =
+  const { prontuario, loading, saving, error, saveError, salvarConsulta, editarConsulta, apagarConsulta } =
     useProntuarioDoc(params.id, params.docId)
   const { data, descricao, setData, setDescricao, reset, toConsulta, isValid } = useNovaConsulta()
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
@@ -66,7 +66,11 @@ export default function ProntuarioDocPage({ params }: IDocPageProps) {
             )}
             {prontuario.consultas.map((c, i) => (
               <li key={`${c.data}-${i}`}>
-                <ConsultaItemGlobal consulta={c} />
+                <ConsultaItemGlobal
+                  consulta={c}
+                  onEditar={editarConsulta}
+                  onApagar={apagarConsulta}
+                />
               </li>
             ))}
           </ConsultasList>

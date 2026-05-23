@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(grep -rn \"new Date\\\\|Date\\\\\\\\.now\" --include=\"*.ts\" --include=\"*.tsx\" src/ app/)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(mkdir -p \"C:\\\\Daniel\\\\Projetos\\\\drive-patients\\\\app\\\\api\\\\prontuario\\\\[id]\\\\[docId]\")"
     ]
   }
 }

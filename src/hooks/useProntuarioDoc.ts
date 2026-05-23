@@ -3,12 +3,14 @@ import { IConsulta, IProntuario } from '@/@types'
 import { prontuarioService } from '@/services/prontuarioService'
 
 interface IUseProntuarioDoc {
-  prontuario: IProntuario | null
-  loading:    boolean
-  saving:     boolean
-  error:      string | null
-  saveError:  string | null
+  prontuario:     IProntuario | null
+  loading:        boolean
+  saving:         boolean
+  error:          string | null
+  saveError:      string | null
   salvarConsulta: (consulta: IConsulta) => Promise<boolean>
+  editarConsulta: (consulta: IConsulta, novaDescricao: string) => Promise<void>
+  apagarConsulta: (consulta: IConsulta) => Promise<void>
 }
 
 export function useProntuarioDoc(pacienteId: string, docId: string): IUseProntuarioDoc {
@@ -53,5 +55,21 @@ export function useProntuarioDoc(pacienteId: string, docId: string): IUseProntua
     [pacienteId, carregar],
   )
 
-  return { prontuario, loading, saving, error, saveError, salvarConsulta }
+  const editarConsulta = useCallback(
+    async (consulta: IConsulta, novaDescricao: string): Promise<void> => {
+      await prontuarioService.editarConsulta(pacienteId, docId, consulta, novaDescricao)
+      await carregar()
+    },
+    [pacienteId, docId, carregar],
+  )
+
+  const apagarConsulta = useCallback(
+    async (consulta: IConsulta): Promise<void> => {
+      await prontuarioService.apagarConsulta(pacienteId, docId, consulta)
+      await carregar()
+    },
+    [pacienteId, docId, carregar],
+  )
+
+  return { prontuario, loading, saving, error, saveError, salvarConsulta, editarConsulta, apagarConsulta }
 }
